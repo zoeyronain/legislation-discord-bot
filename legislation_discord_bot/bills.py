@@ -98,6 +98,8 @@ def render_all_bills(old_bills, new_bills):
 def load_bill_database():
     return json.loads(BILL_DATABASE_FILE.read_text())
 
+def load_member_database():
+    return json.loads(LEGISLATURE_MEMBERS_FILE.read_text())
 
 def save_bill_database(bills):
     BILL_DATABASE_FILE.write_text(json.dumps(bills, indent=4))
@@ -116,11 +118,13 @@ def dump_all():
 
 
 BILL_DATABASE_FILE = pathlib.Path("bill-database.json")
+LEGISLATURE_MEMBERS_FILE = pathlib.Path("legislature-members.json")
 PAGE_SIZE = 25
 SCRAPE_PAGE_INTERVAL = 5
 RELEVEANT_FIELDS = {
     "InstrumentNbr": "Bill",
     "InstrumentSponsor": "Sponsor",
+    "email": "email",
     "AssignedCommittee": "Committee",
     "PrefiledDate": "Prefiled Date",
     "FirstRead": "First Read",
@@ -128,4 +132,6 @@ RELEVEANT_FIELDS = {
     "Subject": "Subject",
     "ShortTitle": "Title",
 }
-RAW_QUERY = '{allInstrumentOverviews(instrumentType:"B", instrumentNbr:"", body:"", sessionYear:"SESSION_YEAR", sessionType:"SESSION_TYPE", assignedCommittee:"", status:"", currentStatus:"", subject:"", instrumentSponsor:"", companionInstrumentNbr:"", effectiveDateCertain:"", effectiveDateOther:"", firstReadSecondBody:"", secondReadSecondBody:"", direction:"ASC"orderBy:"InstrumentNbr"limit:"PAGE_SIZE"offset:"OFFSET"  search:"" customFilters: {}companionReport:"", ){ ID,SessionYear,InstrumentNbr,InstrumentSponsor,SessionType,Body,Subject,ShortTitle,AssignedCommittee,PrefiledDate,FirstRead,CurrentStatus,LastAction,ActSummary,ViewEnacted,CompanionInstrumentNbr,EffectiveDateCertain,EffectiveDateOther,InstrumentType }}'
+RAW_QUERY = '{allInstrumentOverviews(instrumentType:"B", instrumentNbr:"", body:"", sessionYear:"SESSION_YEAR", sessionType:"SESSION_TYPE", assignedCommittee:"", status:"", currentStatus:"", subject:"", instrumentSponsor:"", email:"", companionInstrumentNbr:"", effectiveDateCertain:"", effectiveDateOther:"", firstReadSecondBody:"", secondReadSecondBody:"", direction:"ASC"orderBy:"InstrumentNbr"limit:"PAGE_SIZE"offset:"OFFSET"  search:"" customFilters: {}companionReport:"", ){ ID,SessionYear,InstrumentNbr,InstrumentSponsor,email,SessionType,Body,Subject,ShortTitle,AssignedCommittee,PrefiledDate,FirstRead,CurrentStatus,LastAction,ActSummary,ViewEnacted,CompanionInstrumentNbr,EffectiveDateCertain,EffectiveDateOther,InstrumentType }}'
+
+
